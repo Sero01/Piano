@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Piano</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost&display=swap&family=Satisfy&display=swap" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
+</head>
+<body>
+<div id="header">
+    <p>
+        PLAY PIANO ONLINE!
+    </p>
+    <p id="HeadSubtext">
+        Just use your mouse to play
+    </p>
+</div>
+<div id="piano">
+    <div id="pianoBoard" >
+        <span id="c#1" class="sharp-key">C#</span>
+        <span id="c1" class="piano-key">C</span>
+        <span id="d#1" class="sharp-key">D#</span>
+        <span id="d1" class="piano-key">D</span>
+        <span id="e1" class="piano-key">E</span>
+        <span id="f#1" class="sharp-key">F#</span>
+        <span id="f1" class="piano-key">F</span>
+        <span id="g#1" class="sharp-key">G#</span>
+        <span id="g1" class="piano-key">G</span>
+        <span id="a#1" class="sharp-key">A#</span>
+        <span id="a1" class="piano-key">A</span>
+        <span id="b1" class="piano-key">B</span>
+        <span id="c#2" class="sharp-key">C#</span>
+        <span id="c2" class="piano-key">C</span>
+        <span id="d#2" class="sharp-key">D#</span>
+        <span id="d2" class="piano-key">D</span>
+        <span id="e2" class="piano-key">E</span>
+        <span id="f#2" class="sharp-key">F#</span>
+        <span id="f2" class="piano-key">F</span>
+        <span id="g#2" class="sharp-key">G#</span>
+        <span id="g2" class="piano-key">G</span>
+        <span id="a#2" class="sharp-key">A#</span>
+        <span id="a2" class="piano-key">A</span>
+        <span id="b2" class="piano-key">B</span>
+    </div>
+</div>
+
+    <script>
+        const pianoKeys = document.getElementById("pianoBoard");
+        pianoKeys.addEventListener("click", function(event){
+            var keyPressed = event.target.id;
+            keyPress(keyPressed);
+        })
+    </script>
+    <script src="main.js"></script>
+</body>    
+</html>
