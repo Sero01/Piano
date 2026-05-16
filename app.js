@@ -272,6 +272,12 @@ function startCreate() {
 
 async function openCamera() {
     const box = document.getElementById("photoBox");
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        toast(window.isSecureContext
+            ? "This browser has no camera API — use Upload"
+            : "Camera needs https or localhost — use Upload");
+        return;
+    }
     try {
         state.stream = await navigator.mediaDevices.getUserMedia({
             video: { facingMode: "environment" },
@@ -287,8 +293,13 @@ async function openCamera() {
         camBtn.classList.add("primary");
         camBtn.addEventListener("click", snap);
         old.replaceWith(camBtn);
-    } catch {
-        toast("Camera unavailable — use Upload instead");
+    } catch (e) {
+        const n = e && e.name;
+        toast(
+            n === "NotAllowedError" ? "Camera permission denied — allow it in your browser" :
+            n === "NotFoundError"   ? "No camera found — use Upload instead" :
+            "Camera unavailable — use Upload instead"
+        );
     }
 }
 
@@ -397,7 +408,7 @@ function drawTicket(t) {
         const img = new Image();
         img.onload = () => {
             const photoW = W - PAD * 2;
-            const photoH = photoW;            // square
+            const photoH = Math.round(photoW * (img.height / img.width)); // natural ratio
             let y = PAD;
 
             // measure dynamic content height
@@ -419,18 +430,11 @@ function drawTicket(t) {
             roundRect(ctx, 0, 0, W, H, 28);
             ctx.fill();
 
-            // photo with stamp border
-            ctx.fillStyle = "#ffffff";
-            roundRect(ctx, PAD - 8, y - 8, photoW + 16, photoH + 16, 8);
-            ctx.fill();
+            // photo, rendered as-is at its natural aspect ratio
             ctx.save();
-            roundRect(ctx, PAD, y, photoW, photoH, 6);
+            roundRect(ctx, PAD, y, photoW, photoH, 10);
             ctx.clip();
-            const ar = img.width / img.height;
-            let dw = photoW, dh = photoW / ar, dx = PAD, dy = y;
-            if (dh < photoH) { dh = photoH; dw = photoH * ar; dx = PAD - (dw - photoW) / 2; }
-            else { dy = y - (dh - photoH) / 2; }
-            ctx.drawImage(img, dx, dy, dw, dh);
+            ctx.drawImage(img, PAD, y, photoW, photoH);
             ctx.restore();
             y += photoH + 34;
 
